@@ -1,0 +1,22 @@
+version:  '3'
+services:
+    base-notebook:
+      image:    jupyter/base-notebook:latest
+      volumes:
+        - ${LOCAL_WORKING_DIR}:/home/dreams/work
+        - ${LOCAL_DATASETS}:/home/dreams/work/datasets
+        - ${LOCAL_MODULES}:/home/dreams/work/modules
+        - ${LOCAL_SSL_CERTS}:/etc/ssl/notebook
+      ports:
+        - ${PORT}:8888
+      container_name:   jupyter_notebook
+      command: "start-notebook.sh \
+      --NotebookApp.password=${ACCESS_TOKEN} \
+      --NotebookApp.certfile=/etc/ssl/notebook/jupyter.pem"
+      user: root
+      environment:
+          NB_USER: dreams
+          NB_UID: 1008
+          NB_GID: 1011
+          CHOWN_HOME: 'yes'
+          CHOWN_HOME_OPTS: -R
